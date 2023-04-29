@@ -1,86 +1,37 @@
 import './style.css';
-import { Drink } from './components/Drink?index.js';
+import { Drink } from './components/Drink/index.js';
 
 export const Menu = (props) => {
+  const { drinks } = props;
   const menuElm = document.createElement('section');
   menuElm.classList.add('menu');
+  menuElm.id = 'menu';
   menuElm.innerHTML = `
-  <section id="menu" class="menu">
     <div class="container">
       <h2>Naše nabídka</h2>
       <p class="menu-intro">
         Vyberte si z našeho interaktivního menu a nemusíte čekat na obsluhu
       </p>
-      <div class="drinks-list">
-        <div class="drink">
-          <div class="drink__product">
-            <div class="drink__cup">
-              <img src="https://cafelora.kodim.app/assets/cups/espresso.png">
-            </div>
-            <div class="drink__info">
-              <h3>Espresso</h3>
-              <div class="layer">
-                <div class="layer__color" style="background-color: #613916"></div>
-                <div class="layer__label">espresso</div>
-              </div>
-            </div>
-          </div>
-          <div class="drink__controls">
-            <button class="order-btn">
-              Objednat
-            </button>
-          </div>
-        </div>
-
-        <div class="drink">
-          <div class="drink__product">
-            <div class="drink__cup">
-              <img src="https://cafelora.kodim.app/assets/cups/doppio.png">
-            </div>
-            <div class="drink__info">
-              <h3>Doppio</h3>
-              <div class="layer">
-                <div class="layer__color" style="background-color: #613916"></div>
-                <div class="layer__label">espresso</div>
-              </div>
-            </div>
-          </div>
-          <div class="drink__controls">
-            <button class="order-btn">
-              Objednat
-            </button>
-          </div>
-        </div>
-
-        <div class="drink">
-          <div class="drink__product">
-            <div class="drink__cup">
-              <img src="https://cafelora.kodim.app/assets/cups/lungo.png">
-            </div>
-            <div class="drink__info">
-              <h3>Lungo</h3>
-              <div class="layer">
-                <div class="layer__color" style="background-color: #b0dee1"></div>
-                <div class="layer__label">voda</div>
-              </div>
-              <div class="layer">
-                <div class="layer__color" style="background-color: #613916"></div>
-                <div class="layer__label">espresso</div>
-              </div>
-            </div>
-          </div>
-          <div class="drink__controls">
-            <button class="order-btn">
-              Objednat
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <div class="order-detail">
-        <a href="/objednavka">Detail objednávky</a>
-      </div>
+      <div class="drinks-list"></div>
+      <div class="order-detail"></div>
     </div>
-  </section>`;
+  `;
+
+  const drinksListElm = menuElm.querySelector('.drinks-list');
+  if (drinks === 'loading') {
+    drinksListElm.innerHTML = 'Loading';
+  } else {
+    drinks.forEach((napoj) => {
+      const drinkElm = Drink(napoj);
+      drinksListElm.append(drinkElm);
+    });
+  }
+
+  const detailElm = document.createElement('a');
+  detailElm.href = '/objednavka';
+  detailElm.textContent = 'Detail objednávky';
+  const orderDetailElm = menuElm.querySelector('.order-detail');
+  orderDetailElm.append(detailElm);
+
   return menuElm;
 };
