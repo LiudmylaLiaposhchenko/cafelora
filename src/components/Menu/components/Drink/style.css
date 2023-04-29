@@ -1,0 +1,27 @@
+.drink {
+  width: 20rem;
+}
+
+.drink__product {
+  display: flex;
+}
+
+.drink__cup {
+  width: 9rem;
+  height: 9rem;
+}
+
+.drink__cup img {
+  width: 9rem;
+  height: 9rem;
+}
+
+.drink__info {
+  margin-left: 1rem;
+}
+
+.drink__controls {
+  margin-top: 1rem;
+
+  text-align: center;
+}
