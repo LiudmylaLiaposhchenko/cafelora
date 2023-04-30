@@ -1,4 +1,5 @@
 import './style.css';
+import { Order } from './components/Order';
 
 export const OrderPage = (props) => {
   const main = document.createElement('main');
@@ -6,23 +7,25 @@ export const OrderPage = (props) => {
   main.innerHTML = `
     <div class="order__content container">
       <h1>Vaše objedávnka</h1>
-      <p class="empty-order empty-order--hide">Zatím nemáte nic objednáno</p>
-      <div class="order__items">
-        <div class="order-item">
-          <img src="https://cafelora.kodim.app/assets/cups/vienna-coffee.png" class="order-item__image">
-          <div class="order-item__name">
-            Vídeňská káva
-          </div>
-        </div>
-
-        <div class="order-item">
-          <img src="https://cafelora.kodim.app/assets/cups/chocolate-milk.png" class="order-item__image">
-          <div class="order-item__name">
-            Čokoláda s mlékem
-          </div>
-        </div>
-      </div>
     </div>
   `;
+
+  const orderElm = Order({ items: 'loading' });
+  main.querySelector('.order__content').append(orderElm);
+
+  fetch('https://cafelora.kodim.app/api/me/drinks', {
+    headers: {
+      Authorization:
+        'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3IiOiJMaXVkbXlsYUxpYXBvc2hjaGVua28iLCJzY3AiOiJhcHAiLCJpYXQiOjE2ODI3NzgzMDJ9.R5r28d5lBtntQi1aZM9mloDl9lc8EVdM6aVxw-AdJRc',
+    },
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      const items = data.result.filter((napoj) => {
+        return napoj.ordered;
+      });
+      orderElm.replaceWith(Order({ items: items }));
+    });
+
   return main;
 };
